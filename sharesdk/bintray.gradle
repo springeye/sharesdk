@@ -22,8 +22,9 @@ install {
         // This generates POM.xml with proper parameters
         pom {
             project {
+                description 'Common Share SDK'
                 packaging 'aar'
-                name 'Common Share SDK'
+                name 'sharesdk'
                 url siteUrl
                 licenses {
                     license {

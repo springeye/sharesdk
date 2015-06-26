@@ -10,12 +10,16 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 21
+    lintOptions {
+        abortOnError false
+    }
+
+    compileSdkVersion 22
     buildToolsVersion '22.0.1'
     packageBuildConfig(false)
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 21
+        minSdkVersion 14
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -40,7 +44,8 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
 }
-
-apply from: 'bintray.gradle'
+if(hasProperty('JCENTER_USERNAME') || hasProperty('JCENTER_APIKEY')){
+    apply from: 'bintray.gradle'
+}
 
 

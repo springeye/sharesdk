@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.henjue.library.share">
-    <uses-sdk android:minSdkVersion="19"/>
+          package="org.henjue.library.share">/>
     <application>
         <!-- 必须注册在微博授权，分享微博时候用到 -->
         <activity android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"

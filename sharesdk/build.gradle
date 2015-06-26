@@ -40,6 +40,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
 }
+
 apply from: 'bintray.gradle'
 
 

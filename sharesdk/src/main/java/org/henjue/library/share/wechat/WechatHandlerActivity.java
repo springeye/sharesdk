@@ -63,7 +63,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
         super.onCreate(savedInstanceState);
         mContext = WechatHandlerActivity.this;
         mIWXAPI = WechatAuthManager.getIWXAPI();
-        if(mIWXAPI!=null){
+        if (mIWXAPI != null) {
             mIWXAPI.handleIntent(getIntent(), this);
         }
         finish();
@@ -73,7 +73,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(mIWXAPI!=null){
+        if (mIWXAPI != null) {
             mIWXAPI.handleIntent(getIntent(), this);
         }
         finish();
@@ -127,10 +127,9 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
                                                         .getBytes());
 
                                         JSONObject jsonObject = new JSONObject(json);
-                                        final String accessToken = jsonObject
-                                                .getString("access_token");
+                                        final String accessToken = jsonObject.getString("access_token");
                                         final String openId = jsonObject.getString("openid");
-
+                                       final long expiresTime = jsonObject.getLong("expires_in");
                                         RequestInterceptor requestInterceptor
                                                 = new RequestInterceptor() {
                                             @Override
@@ -156,13 +155,9 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
                                                         try {
 
                                                             JSONObject jsonObject = new JSONObject(json);
-                                                            String nickname=jsonObject.getString("nickname");
-                                                            String headimg=jsonObject.getString("headimgurl");
-                                                            String id=jsonObject.getString("openid");
-                                                            SendAuth.Resp auth = (SendAuth.Resp) resp;
-                                                            String token = auth.token;
-                                                            long expiresTime=auth.expireDate;
-                                                            AuthInfo info=new AuthInfo(json,nickname,headimg,id,token,expiresTime);
+                                                            String nickname = jsonObject.getString("nickname");
+                                                            String headimg = jsonObject.getString("headimgurl");
+                                                            AuthInfo info = new AuthInfo(json, nickname, headimg, openId, accessToken, expiresTime);
                                                             if (mAuthListener != null) {
                                                                 mAuthListener.onComplete(info);
                                                             }

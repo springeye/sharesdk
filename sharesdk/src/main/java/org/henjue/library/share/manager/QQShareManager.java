@@ -12,6 +12,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.henjue.library.share.R;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.model.Message;
 import org.henjue.library.share.util.ResUtils;

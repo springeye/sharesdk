@@ -27,6 +27,11 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.SendAuth;
 
+import org.henjue.library.hnet.Callback;
+import org.henjue.library.hnet.HNet;
+import org.henjue.library.hnet.Response;
+import org.henjue.library.hnet.exception.HNetError;
+import org.henjue.library.hnet.typed.TypedByteArray;
 import org.henjue.library.share.AuthListener;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.api.WechatApiService;
@@ -91,6 +96,11 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
 
                     getApiService().getAccessToken(ShareSDK.getInstance().getWechatAppId(), ShareSDK.getInstance().getWechatSecret(), code, "authorization_code", new Callback<Response>() {
                         @Override
+                        public void start() {
+
+                        }
+
+                        @Override
                         public void success(Response response, Response response2) {
                             try {
                                 String json = new String(
@@ -102,6 +112,11 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
                                 final String openId = jsonObject.getString("openid");
                                 final long expiresTime = jsonObject.getLong("expires_in");
                                 getApiService().getWechatUserInfo(accessToken, openId, new Callback<Response>() {
+                                    @Override
+                                    public void start() {
+
+                                    }
+
                                     @Override
                                     public void success(Response response, Response response2) {
                                         String json = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -124,10 +139,15 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
                                     }
 
                                     @Override
-                                    public void failure(RetrofitError error) {
+                                    public void failure(HNetError error) {
                                         if (mAuthListener != null) {
                                             mAuthListener.onError();
                                         }
+                                    }
+
+                                    @Override
+                                    public void end() {
+
                                     }
                                 });
 
@@ -141,10 +161,15 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
                         }
 
                         @Override
-                        public void failure(RetrofitError error) {
+                        public void failure(HNetError error) {
                             if (mAuthListener != null) {
                                 mAuthListener.onError();
                             }
+                        }
+
+                        @Override
+                        public void end() {
+
                         }
                     });
                 } else {
@@ -178,7 +203,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
     }
 
     private WechatApiService getApiService() {
-        return new RestAdapter.Builder()
+        return new HNet.Builder()
                 .setEndpoint(API_URL)
                 .build().create(WechatApiService.class);
     }

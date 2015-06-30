@@ -1,4 +1,4 @@
-package org.henjue.sharesdk;
+package org.henjue.library.share;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

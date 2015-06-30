@@ -1,4 +1,6 @@
 package org.henjue.library.share.api;
+import org.henjue.library.hnet.Callback;
+import org.henjue.library.hnet.Response;
 import org.henjue.library.hnet.anntoation.*;
 public interface WechatApiService {
 

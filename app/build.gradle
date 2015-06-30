@@ -1,16 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    lintOptions {
-        abortOnError false
-    }
-
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "org.henjue.sharesdk"
-        minSdkVersion 19
+        applicationId "sharesdk.henjue.org.sharesdk"
+        minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

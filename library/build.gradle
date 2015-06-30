@@ -26,4 +26,3 @@ dependencies {
 if(hasProperty('JCENTER_USERNAME') && hasProperty('JCENTER_APIKEY')){
     apply from: 'bintray.gradle'
 }
-

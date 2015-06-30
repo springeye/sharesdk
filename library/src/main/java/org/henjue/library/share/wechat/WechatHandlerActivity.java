@@ -47,7 +47,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
 
     private AuthListener mAuthListener;
 
-    private static final String API_URL = "https://api.weixin.qq.com";
+    public static final String API_URL = "https://api.weixin.qq.com";
 
     /**
      * BaseResp的getType函数获得的返回值，1:第三方授权， 2:分享
@@ -93,92 +93,13 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
 
                 if (resp.getType() == TYPE_LOGIN) {
                     final String code = ((SendAuth.Resp) resp).token;
-
-                    getApiService().getAccessToken(ShareSDK.getInstance().getWechatAppId(), ShareSDK.getInstance().getWechatSecret(), code, "authorization_code", new Callback<Response>() {
-                        @Override
-                        public void start() {
-
-                        }
-
-                        @Override
-                        public void success(Response response, Response response2) {
-                            try {
-                                String json = new String(
-                                        ((TypedByteArray) response.getBody())
-                                                .getBytes());
-
-                                JSONObject jsonObject = new JSONObject(json);
-                                final String accessToken = jsonObject.getString("access_token");
-                                final String openId = jsonObject.getString("openid");
-                                final long expiresTime = jsonObject.getLong("expires_in");
-                                getApiService().getWechatUserInfo(accessToken, openId, new Callback<Response>() {
-                                    @Override
-                                    public void start() {
-
-                                    }
-
-                                    @Override
-                                    public void success(Response response, Response response2) {
-                                        String json = new String(((TypedByteArray) response.getBody()).getBytes());
-                                        try {
-
-                                            JSONObject jsonObject = new JSONObject(json);
-                                            String nickname = jsonObject.getString("nickname");
-                                            String headimg = jsonObject.getString("headimgurl");
-                                            AuthInfo info = new AuthInfo(json, nickname, headimg, openId, accessToken, expiresTime);
-                                            if (mAuthListener != null) {
-                                                mAuthListener.onComplete(info);
-                                            }
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            if (mAuthListener != null) {
-                                                mAuthListener.onError();
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void failure(HNetError error) {
-                                        if (mAuthListener != null) {
-                                            mAuthListener.onError();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void end() {
-
-                                    }
-                                });
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                if (mAuthListener != null) {
-                                    mAuthListener
-                                            .onError();
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void failure(HNetError error) {
-                            if (mAuthListener != null) {
-                                mAuthListener.onError();
-                            }
-                        }
-
-                        @Override
-                        public void end() {
-
-                        }
-                    });
+                    WechatApiService api = getApiService();
+                    api.getAccessToken(ShareSDK.getInstance().getWechatAppId(), ShareSDK.getInstance().getWechatSecret(), code, "authorization_code", new AccessTokenCallback(mAuthListener,api));
                 } else {
                     Toast.makeText(mContext, ResUtils.getString(mContext, "share_success"), Toast.LENGTH_SHORT).show();
                 }
-
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
-
                 if (resp.getType() == TYPE_LOGIN) {
                     if (mAuthListener != null) {
                         mAuthListener.onCancel();

@@ -8,31 +8,23 @@
                   android:exported="false" >
         </activity>
 
-        <activity
-                android:name="com.tencent.tauth.AuthActivity"
-                android:launchMode="singleTask"
-                android:noHistory="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent100383694" />
-            </intent-filter>
-        </activity>
+        <!--<activity-->
+                <!--android:name="com.tencent.tauth.AuthActivity"-->
+                <!--android:launchMode="singleTask"-->
+                <!--android:noHistory="true" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!--<data android:scheme="tencent100383694" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
         <activity
                 android:name="com.tencent.connect.common.AssistActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:screenOrientation="portrait"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-
-        <activity
-                android:name=".wechat.WechatHandlerActivity"
-                android:exported="true"
-                android:screenOrientation="portrait"
-                android:theme="@android:style/Theme.NoDisplay" />
-
     </application>
 
 </manifest>

@@ -59,7 +59,7 @@ public class ShareUtil {
             options.inJustDecodeBounds = true;
             Bitmap tmp = BitmapFactory.decodeFile(path, options);
             if (tmp != null) {
-                tmp.recycle();
+//                tmp.recycle();
                 tmp = null;
             }
 
@@ -99,7 +99,7 @@ public class ShareUtil {
 
             final Bitmap scale = Bitmap.createScaledBitmap(bm, newWidth, newHeight, true);
             if (scale != null) {
-                bm.recycle();
+//                bm.recycle();
                 bm = scale;
             }
 
@@ -109,7 +109,7 @@ public class ShareUtil {
                     return bm;
                 }
 
-                bm.recycle();
+//                bm.recycle();
                 bm = cropped;
             }
             return bm;

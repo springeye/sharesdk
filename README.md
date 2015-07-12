@@ -2,7 +2,7 @@
 ## Build:
 ![build status](https://travis-ci.org/henjue/sharesdk.svg?branch=master)
 
-Use Document to [See](http://www.j99.so/2015/06/24/share-sdk-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/)!
+Use Document to [See](http://www.j99.so/2015/06/24/Android-Share-Sdk-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/)!
 
 目前发现一个BUG，下一版本会修复，临时解决方案，在你们的项目中添加如下string:
 ```xml
@@ -16,6 +16,8 @@ Use Document to [See](http://www.j99.so/2015/06/24/share-sdk-%E4%BD%BF%E7%94%A8%
 
 
 ## changelog:
+1.0.2_beta3
+* 修复一些错误
 
 1.0.1(2015-06-24)
 * 更新新浪weibo sdk到v3.1.1 支持64位手机

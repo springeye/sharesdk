@@ -163,17 +163,8 @@ public class WechatShareManager implements IShareManager {
     }
 
     @Override
-    public void share(Message message, int shareType, ShareListener listener) {
-        if(listener==null){
-            share(message,shareType);
-        }else{
-            this.mListener=listener;
-        }
-    }
-
-    @Override
-    public void share(Message content,int shareType) {
-        mListener=ShareListener.DEFAULT;
+    public void share(Message content, int shareType, ShareListener listener) {
+        mListener=listener==null?ShareListener.DEFAULT:listener;
         if(content.getShareType()== Type.Share.TEXT){
             shareText(shareType, content);
         }else if(content.getShareType()== Type.Share.IMAGE){
@@ -183,6 +174,11 @@ public class WechatShareManager implements IShareManager {
         }else if(content.getShareType()== Type.Share.MUSIC){
             shareMusic(shareType, content);
         }
+    }
+
+    @Override
+    public void share(Message content,int shareType) {
+        share(content,shareType,ShareListener.DEFAULT);
     }
     public static ShareListener getPlatformActionListener() {
         return mListener;

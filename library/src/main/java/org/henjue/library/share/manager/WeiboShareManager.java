@@ -217,23 +217,13 @@ public class WeiboShareManager implements IShareManager {
 
 
     @Override
-    public void share(Message message, int shareType, ShareListener listener) {
-        if(listener==null){
-            share(message,shareType);
-        }else{
-            this.mListener=listener;
-        }
-    }
-
-    @Override
-    public void share(Message content, int shareType) {
-
+    public void share(Message content, int shareType, ShareListener listener) {
         if (mSinaAPI == null) {
             return;
         }
-        this.mListener=ShareListener.DEFAULT;
+        this.mListener=listener==null?ShareListener.DEFAULT:listener;
         if(content.getShareType()== Type.Share.TEXT){
-            shareText( content);
+            shareText(content);
         }else if(content.getShareType()== Type.Share.IMAGE){
             sharePicture( content);
         }else if(content.getShareType()== Type.Share.WEBPAGE){
@@ -241,7 +231,10 @@ public class WeiboShareManager implements IShareManager {
         }else if(content.getShareType()== Type.Share.MUSIC){
             shareMusic( content);
         }
+    }
 
-
+    @Override
+    public void share(Message content, int shareType) {
+        share(content,shareType,ShareListener.DEFAULT);
     }
 }

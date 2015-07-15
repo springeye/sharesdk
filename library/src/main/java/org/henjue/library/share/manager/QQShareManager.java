@@ -101,16 +101,12 @@ public class QQShareManager implements IShareManager {
 
     @Override
     public void share(Message message, int shareType, ShareListener listener) {
-        if(listener==null){
-            share(message,shareType);
-        }else{
-            this.mListener=listener;
-        }
+        this.mListener=listener==null?ShareListener.DEFAULT:listener;
+        shareWebPage((Activity) mContext, message);
     }
 
     @Override
     public void share(Message message, int shareType) {
-        this.mListener=ShareListener.DEFAULT;
-        shareWebPage((Activity) mContext, message);
+        share(message,shareType,ShareListener.DEFAULT);
     }
 }

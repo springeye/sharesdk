@@ -1,6 +1,6 @@
 # Common Share SDK
 ## Build:
-![build status](https://travis-ci.org/henjue/sharesdk.svg?branch=master)
+![build status](https://travis-ci.org/henjue/sharesdk.svg?branch=1.0.3_beta1)
 
 Use Document to [See](http://www.j99.so/2015/06/24/Android-Share-Sdk-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/)!
 

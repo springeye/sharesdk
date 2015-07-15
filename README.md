@@ -13,6 +13,21 @@ Use Document to [See](http://www.j99.so/2015/06/24/Android-Share-Sdk-%E4%BD%BF%E
 <string name="share_pic_empty">图片不能为空</string>
 ```
 
+## 常见问题
+1、微薄没有返回结果
+在你的发起登录请求的Activity的onActivityResult方法中加入如下代码：
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);  
+    mSsoHandler = WeiboAuthManager.getSsoHandler();  
+    if (mSsoHandler != null) {
+        mSsoHandler.authorizeCallBack(requestCode, resultCode, data);  
+    }
+}
+```
+2、WeChat刚被调用就返回
+* 可能为一开始的一些原因（如一开始签名填写错了）导致WeChat错误缓存导致，可以清空WeChat数据试试
 
 
 ## changelog:

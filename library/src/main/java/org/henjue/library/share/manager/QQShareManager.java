@@ -12,9 +12,9 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.henjue.library.share.R;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.model.Message;
-import org.henjue.library.share.util.ResUtils;
 
 /**
  * Created by echo on 5/18/15.
@@ -82,17 +82,17 @@ public class QQShareManager implements IShareManager {
     private final IUiListener iUiListener = new IUiListener() {
         @Override
         public void onCancel() {
-            Toast.makeText(mContext, ResUtils.getString(mContext, "share_cancel"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.share_cancel, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onComplete(Object response) {
-            Toast.makeText(mContext, ResUtils.getString(mContext, "share_success"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.share_success, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(UiError e) {
-            Toast.makeText(mContext, ResUtils.getString(mContext, "share_failed"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.share_failed, Toast.LENGTH_SHORT).show();
         }
     };
 

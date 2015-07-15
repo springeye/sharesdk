@@ -5,4 +5,5 @@
     <string name="share_failed">分享失败</string>
     <string name="share_install_wechat_tips">没有安装微信</string>
     <string name="share_pic_empty">图片不能为空</string>
+    <string name="auth_denied">授权被拒绝</string>
 </resources>

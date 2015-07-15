@@ -10,8 +10,8 @@ import com.tencent.mm.sdk.openapi.SendAuth;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.henjue.library.share.AuthListener;
+import org.henjue.library.share.R;
 import org.henjue.library.share.ShareSDK;
-import org.henjue.library.share.util.ResUtils;
 
 /**
  * Created by echo on 5/19/15.
@@ -36,7 +36,7 @@ public class WechatAuthManager implements IAuthManager {
         if (!TextUtils.isEmpty(mWeChatAppId)) {
             mIWXAPI = WXAPIFactory.createWXAPI(context, mWeChatAppId, true);
             if (!mIWXAPI.isWXAppInstalled()) {
-                Toast.makeText(context, ResUtils.getString(context, "share_install_wechat_tips"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.share_install_wechat_tips, Toast.LENGTH_SHORT).show();
                 return;
             }else{
                 mIWXAPI.registerApp(mWeChatAppId);

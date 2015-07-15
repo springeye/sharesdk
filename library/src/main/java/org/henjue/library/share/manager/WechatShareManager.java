@@ -14,10 +14,10 @@ import com.tencent.mm.sdk.openapi.WXMusicObject;
 import com.tencent.mm.sdk.openapi.WXTextObject;
 import com.tencent.mm.sdk.openapi.WXWebpageObject;
 
+import org.henjue.library.share.R;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.Type;
 import org.henjue.library.share.model.Message;
-import org.henjue.library.share.util.ResUtils;
 import org.henjue.library.share.util.ShareUtil;
 
 /**
@@ -62,7 +62,7 @@ public class WechatShareManager implements IShareManager {
     private void initWeixinShare(Context context) {
         mIWXAPI = WXAPIFactory.createWXAPI(context, mWeChatAppId, true);
         if (!mIWXAPI.isWXAppInstalled()) {
-            Toast.makeText(context, ResUtils.getString(context, "share_install_wechat_tips"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.share_install_wechat_tips, Toast.LENGTH_SHORT).show();
             return;
         }else{
             mIWXAPI.registerApp(mWeChatAppId);
@@ -119,7 +119,7 @@ public class WechatShareManager implements IShareManager {
 
         Bitmap bmp = ShareUtil.extractThumbNail(message.getImageUrl(), THUMB_SIZE, THUMB_SIZE, true);
         if (bmp == null) {
-            Toast.makeText(mContext, ResUtils.getString(mContext, "share_pic_empty"),
+            Toast.makeText(mContext, R.string.share_pic_empty,
                     Toast.LENGTH_SHORT).show();
         } else {
             msg.setThumbImage(bmp);
@@ -146,7 +146,7 @@ public class WechatShareManager implements IShareManager {
         Bitmap thumb = ShareUtil.extractThumbNail(message.getImageUrl(),THUMB_SIZE,THUMB_SIZE,true);
 
         if (thumb == null) {
-            Toast.makeText(mContext, ResUtils.getString(mContext, "share_pic_empty"),
+            Toast.makeText(mContext,R.string.share_pic_empty,
                     Toast.LENGTH_SHORT).show();
         } else {
             msg.setThumbImage(thumb);

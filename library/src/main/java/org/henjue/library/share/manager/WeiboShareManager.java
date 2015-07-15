@@ -21,10 +21,10 @@ import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.Utility;
 
+import org.henjue.library.share.R;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.Type;
 import org.henjue.library.share.model.Message;
-import org.henjue.library.share.util.ResUtils;
 import org.henjue.library.share.util.ShareUtil;
 import org.henjue.library.share.weibo.AccessTokenKeeper;
 
@@ -194,19 +194,19 @@ public class WeiboShareManager implements IShareManager {
 
             @Override
             public void onWeiboException(WeiboException arg0) {
-                Toast.makeText(context, ResUtils.getString(context, "share_failed"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.share_failed, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onComplete(Bundle bundle) {
                 Oauth2AccessToken newToken = Oauth2AccessToken.parseAccessToken(bundle);
                 AccessTokenKeeper.writeAccessToken(context, newToken);
-                Toast.makeText(context, ResUtils.getString(context, "share_success"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.share_success, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancel() {
-                Toast.makeText(context, ResUtils.getString(context, "share_cancel"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.share_cancel, Toast.LENGTH_SHORT).show();
 
             }
         });

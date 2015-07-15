@@ -22,6 +22,7 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.Utility;
 
 import org.henjue.library.share.R;
+import org.henjue.library.share.ShareListener;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.Type;
 import org.henjue.library.share.model.Message;
@@ -51,6 +52,7 @@ public class WeiboShareManager implements IShareManager {
      * 微博分享的接口实例
      */
     private IWeiboShareAPI mSinaAPI;
+    private ShareListener mListener;
 
 
     WeiboShareManager(Context context) {
@@ -194,19 +196,19 @@ public class WeiboShareManager implements IShareManager {
 
             @Override
             public void onWeiboException(WeiboException arg0) {
-                Toast.makeText(context, R.string.share_failed, Toast.LENGTH_SHORT).show();
+                mListener.onFaild();
             }
 
             @Override
             public void onComplete(Bundle bundle) {
                 Oauth2AccessToken newToken = Oauth2AccessToken.parseAccessToken(bundle);
                 AccessTokenKeeper.writeAccessToken(context, newToken);
-                Toast.makeText(context, R.string.share_success, Toast.LENGTH_SHORT).show();
+                mListener.onSuccess();
             }
 
             @Override
             public void onCancel() {
-                Toast.makeText(context, R.string.share_cancel, Toast.LENGTH_SHORT).show();
+                mListener.onCancel();
 
             }
         });
@@ -215,12 +217,21 @@ public class WeiboShareManager implements IShareManager {
 
 
     @Override
+    public void share(Message message, int shareType, ShareListener listener) {
+        if(listener==null){
+            share(message,shareType);
+        }else{
+            this.mListener=listener;
+        }
+    }
+
+    @Override
     public void share(Message content, int shareType) {
 
         if (mSinaAPI == null) {
             return;
         }
-
+        this.mListener=ShareListener.DEFAULT;
         if(content.getShareType()== Type.Share.TEXT){
             shareText( content);
         }else if(content.getShareType()== Type.Share.IMAGE){

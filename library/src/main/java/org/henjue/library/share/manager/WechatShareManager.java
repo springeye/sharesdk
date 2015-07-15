@@ -14,7 +14,9 @@ import com.tencent.mm.sdk.openapi.WXMusicObject;
 import com.tencent.mm.sdk.openapi.WXTextObject;
 import com.tencent.mm.sdk.openapi.WXWebpageObject;
 
+import org.henjue.library.share.AuthListener;
 import org.henjue.library.share.R;
+import org.henjue.library.share.ShareListener;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.Type;
 import org.henjue.library.share.model.Message;
@@ -47,9 +49,10 @@ public class WechatShareManager implements IShareManager {
 
 
     private String mWeChatAppId;
+    private static ShareListener mListener;
 
 
-     WechatShareManager(Context context) {
+    WechatShareManager(Context context) {
         mContext = context;
         mWeChatAppId = ShareSDK.getInstance().getWechatAppId();
         if (!TextUtils.isEmpty(mWeChatAppId)) {
@@ -160,7 +163,17 @@ public class WechatShareManager implements IShareManager {
     }
 
     @Override
+    public void share(Message message, int shareType, ShareListener listener) {
+        if(listener==null){
+            share(message,shareType);
+        }else{
+            this.mListener=listener;
+        }
+    }
+
+    @Override
     public void share(Message content,int shareType) {
+        mListener=ShareListener.DEFAULT;
         if(content.getShareType()== Type.Share.TEXT){
             shareText(shareType, content);
         }else if(content.getShareType()== Type.Share.IMAGE){
@@ -170,6 +183,9 @@ public class WechatShareManager implements IShareManager {
         }else if(content.getShareType()== Type.Share.MUSIC){
             shareMusic(shareType, content);
         }
+    }
+    public static ShareListener getPlatformActionListener() {
+        return mListener;
     }
 
 

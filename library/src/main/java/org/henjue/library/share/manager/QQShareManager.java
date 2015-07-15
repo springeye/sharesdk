@@ -13,6 +13,7 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import org.henjue.library.share.R;
+import org.henjue.library.share.ShareListener;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.model.Message;
 
@@ -31,9 +32,10 @@ public class QQShareManager implements IShareManager {
     private QQShare mQQShare;
 
     private Context mContext;
+    private ShareListener mListener;
 
 
-     QQShareManager(Context context) {
+    QQShareManager(Context context) {
         mAppId = ShareSDK.getInstance().getQQAppId();
         mContext = context;
         if (!TextUtils.isEmpty(mAppId)) {
@@ -82,24 +84,33 @@ public class QQShareManager implements IShareManager {
     private final IUiListener iUiListener = new IUiListener() {
         @Override
         public void onCancel() {
-            Toast.makeText(mContext, R.string.share_cancel, Toast.LENGTH_SHORT).show();
+            mListener.onCancel();
         }
 
         @Override
         public void onComplete(Object response) {
-            Toast.makeText(mContext, R.string.share_success, Toast.LENGTH_SHORT).show();
+            mListener.onSuccess();
         }
 
         @Override
         public void onError(UiError e) {
-            Toast.makeText(mContext, R.string.share_failed, Toast.LENGTH_SHORT).show();
+            mListener.onFaild();
         }
     };
 
 
     @Override
-    public void share(Message message, int shareType) {
+    public void share(Message message, int shareType, ShareListener listener) {
+        if(listener==null){
+            share(message,shareType);
+        }else{
+            this.mListener=listener;
+        }
+    }
 
+    @Override
+    public void share(Message message, int shareType) {
+        this.mListener=ShareListener.DEFAULT;
         shareWebPage((Activity) mContext, message);
     }
 }

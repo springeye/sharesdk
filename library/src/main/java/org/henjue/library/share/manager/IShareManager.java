@@ -1,5 +1,6 @@
 package org.henjue.library.share.manager;
 
+import org.henjue.library.share.ShareListener;
 import org.henjue.library.share.model.Message;
 
 /**
@@ -7,6 +8,7 @@ import org.henjue.library.share.model.Message;
  */
 public interface IShareManager {
 
+    void share(Message message, int shareType,ShareListener listener);
     void share(Message message, int shareType);
 
 }

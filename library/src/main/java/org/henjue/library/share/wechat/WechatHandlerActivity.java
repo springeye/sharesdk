@@ -30,9 +30,11 @@ import com.tencent.mm.sdk.openapi.SendAuth;
 import org.henjue.library.hnet.HNet;
 import org.henjue.library.share.AuthListener;
 import org.henjue.library.share.R;
+import org.henjue.library.share.ShareListener;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.api.WechatApiService;
 import org.henjue.library.share.manager.WechatAuthManager;
+import org.henjue.library.share.manager.WechatShareManager;
 
 
 public class WechatHandlerActivity extends Activity implements IWXAPIEventHandler {
@@ -49,6 +51,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
     private static final int TYPE_LOGIN = 1;
 
     private Context mContext;
+    private ShareListener mShareListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
 
         mAuthListener = WechatAuthManager
                 .getPlatformActionListener();
+        mShareListener = WechatShareManager.getPlatformActionListener();
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 if (resp.getType() == TYPE_LOGIN) {
@@ -89,7 +93,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
                     WechatApiService api = getApiService();
                     api.getAccessToken(ShareSDK.getInstance().getWechatAppId(), ShareSDK.getInstance().getWechatSecret(), code, "authorization_code", new AccessTokenCallback(mAuthListener,api));
                 } else {
-                    Toast.makeText(mContext,  R.string.share_success, Toast.LENGTH_SHORT).show();
+                    mShareListener.onSuccess();
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
@@ -98,7 +102,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
                         mAuthListener.onCancel();
                     }
                 } else {
-                    Toast.makeText(mContext,  R.string.share_cancel, Toast.LENGTH_SHORT).show();
+                    mShareListener.onCancel();
                 }
 
                 break;
@@ -108,7 +112,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
                         mAuthListener.onError();
                     }
                 } else {
-                    Toast.makeText(mContext, R.string.share_failed, Toast.LENGTH_SHORT).show();
+                    mShareListener.onFaild();
                 }
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:

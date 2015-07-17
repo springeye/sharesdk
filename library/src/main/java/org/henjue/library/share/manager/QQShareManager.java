@@ -27,7 +27,7 @@ import java.io.IOException;
  * Created by echo on 5/18/15.
  */
 public class QQShareManager implements IShareManager {
-
+    public static final int QZONE_SHARE_TYPE = 0;
     final File sharesdk = new File(Environment.getExternalStorageDirectory(), "sharesdk");
 
     private String mAppId;

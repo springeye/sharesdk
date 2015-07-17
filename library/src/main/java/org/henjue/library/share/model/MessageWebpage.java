@@ -7,9 +7,6 @@ import android.graphics.BitmapFactory;
 import org.henjue.library.share.Message;
 import org.henjue.library.share.Type;
 
-import java.io.IOException;
-import java.net.URL;
-
 /**
  * Created by echo on 5/18/15.
  * 分享网页模式
@@ -29,11 +26,7 @@ public class MessageWebpage implements Message.Web {
         this.title = title;
         this.description = description;
         this.url = url;
-        try {
-            this.mBitmap = BitmapFactory.decodeStream(new URL(imageUrl).openStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.mBitmap = BitmapFactory.decodeFile(imageUrl);
     }
     public MessageWebpage(String title, String description,
                           String url, Bitmap bitmap) {

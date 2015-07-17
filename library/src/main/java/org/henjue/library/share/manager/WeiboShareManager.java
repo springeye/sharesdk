@@ -2,10 +2,8 @@ package org.henjue.library.share.manager;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.sina.weibo.sdk.api.ImageObject;
 import com.sina.weibo.sdk.api.MusicObject;
@@ -21,11 +19,10 @@ import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.Utility;
 
-import org.henjue.library.share.R;
 import org.henjue.library.share.ShareListener;
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.Type;
-import org.henjue.library.share.model.Message;
+import org.henjue.library.share.Message;
 import org.henjue.library.share.util.ShareUtil;
 import org.henjue.library.share.weibo.AccessTokenKeeper;
 
@@ -66,7 +63,7 @@ public class WeiboShareManager implements IShareManager {
     }
 
 
-    private void shareText(Message message) {
+    private void shareText(Message.Text message) {
 
         //初始化微博的分享消息
         WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
@@ -79,10 +76,10 @@ public class WeiboShareManager implements IShareManager {
 
     }
 
-    private void sharePicture(Message message) {
+    private void sharePicture(Message.Picture message) {
 
         WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
-        weiboMultiMessage.imageObject = getImageObj(message.getImageUrl());
+        weiboMultiMessage.imageObject = getImageObj(message.getImage());
         //初始化从第三方到微博的消息请求
         SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
         request.transaction = ShareUtil.buildTransaction("sinapic");
@@ -90,11 +87,11 @@ public class WeiboShareManager implements IShareManager {
         allInOneShare(mContext, request);
     }
 
-    private void shareWebPage(Message message) {
+    private void shareWebPage(Message.Web message) {
 
         WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
-        weiboMultiMessage.textObject = getTextObj(message.getContent());
-        weiboMultiMessage.imageObject = getImageObj(message.getImageUrl());
+        weiboMultiMessage.textObject = getTextObj(message.getDescription());
+        weiboMultiMessage.imageObject = getImageObj(message.getImage());
         // 初始化从第三方到微博的消息请求
         SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
         // 用transaction唯一标识一个请求
@@ -105,7 +102,7 @@ public class WeiboShareManager implements IShareManager {
     }
 
 
-    private void shareMusic(Message message) {
+    private void shareMusic(Message.Music message) {
         WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
         weiboMultiMessage.mediaObject = getMusicObj(message);
         //初始化从第三方到微博的消息请求
@@ -132,10 +129,9 @@ public class WeiboShareManager implements IShareManager {
      *
      * @return 图片消息对象。
      */
-    private ImageObject getImageObj(String imageUrl) {
+    private ImageObject getImageObj(Bitmap bitmap) {
         ImageObject imageObject = new ImageObject();
-        Bitmap bmp = BitmapFactory.decodeFile(imageUrl);
-        imageObject.setImageObject(bmp);
+        imageObject.setImageObject(bitmap);
         return imageObject;
     }
 
@@ -144,17 +140,17 @@ public class WeiboShareManager implements IShareManager {
      *
      * @return 多媒体（网页）消息对象。
      */
-    private WebpageObject getWebpageObj(Message message) {
+    private WebpageObject getWebpageObj(Message.Web message) {
         WebpageObject mediaObject = new WebpageObject();
         mediaObject.identify = Utility.generateGUID();
         mediaObject.title = message.getTitle();
-        mediaObject.description = message.getContent();
+        mediaObject.description = message.getDescription();
 
         // 设置 Bitmap 类型的图片到视频对象里
-        Bitmap bmp = ShareUtil.extractThumbNail(message.getImageUrl(), 150, 150, true);
+        Bitmap bmp = Bitmap.createScaledBitmap(message.getImage(),150,150,true);
         mediaObject.setThumbImage(bmp);
         mediaObject.actionUrl = message.getURL();
-        mediaObject.defaultText = message.getContent();
+        mediaObject.defaultText = message.getDescription();
         return mediaObject;
     }
 
@@ -164,21 +160,20 @@ public class WeiboShareManager implements IShareManager {
      *
      * @return 多媒体（音乐）消息对象。
      */
-    private MusicObject getMusicObj(Message message) {
+    private MusicObject getMusicObj(Message.Music message) {
         // 创建媒体消息
         MusicObject musicObject = new MusicObject();
         musicObject.identify = Utility.generateGUID();
         musicObject.title = message.getTitle();
-        musicObject.description = message.getContent();
+        musicObject.description =  message.getDescription();
 
         // 设置 Bitmap 类型的图片到视频对象里
-        Bitmap bmp = BitmapFactory.decodeFile(message.getImageUrl());
-        musicObject.setThumbImage(bmp);
+        musicObject.setThumbImage(message.getImage());
         musicObject.actionUrl = message.getURL();
         musicObject.dataUrl =  ShareSDK.getInstance().getSinaRedirectUrl();
         musicObject.dataHdUrl = ShareSDK.getInstance().getSinaRedirectUrl();
         musicObject.duration = 10;
-        musicObject.defaultText = message.getContent();
+        musicObject.defaultText = message.getDescription();
         return musicObject;
     }
 
@@ -223,13 +218,13 @@ public class WeiboShareManager implements IShareManager {
         }
         this.mListener=listener==null?ShareListener.DEFAULT:listener;
         if(content.getShareType()== Type.Share.TEXT){
-            shareText(content);
+            shareText((Message.Text)content);
         }else if(content.getShareType()== Type.Share.IMAGE){
-            sharePicture( content);
+            sharePicture((Message.Picture) content);
         }else if(content.getShareType()== Type.Share.WEBPAGE){
-            shareWebPage( content);
+            shareWebPage((Message.Web) content);
         }else if(content.getShareType()== Type.Share.MUSIC){
-            shareMusic( content);
+            shareMusic( (Message.Music)content);
         }
     }
 

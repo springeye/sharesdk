@@ -4,14 +4,6 @@
 
 Use Document to [See](http://www.j99.so/2015/06/24/Android-Share-Sdk-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/)!
 
-目前发现一个BUG，下一版本会修复，临时解决方案，在你们的项目中添加如下string:
-```xml
-<string name="share_cancel">取消分享</string>
-<string name="share_success">分享成功</string>
-<string name="share_failed">分享失败</string>
-<string name="share_install_wechat_tips">没有安装微信</string>
-<string name="share_pic_empty">图片不能为空</string>
-```
 
 ## 常见问题
 1、微薄没有返回结果

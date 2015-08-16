@@ -5,8 +5,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.SendAuth;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.henjue.library.share.AuthListener;
@@ -23,7 +23,6 @@ public class WechatAuthManager implements IAuthManager {
     private static final String STATE = "lls_engzo_wechat_login";
 
 
-
     private String mWeChatAppId;
 
     private static IWXAPI mIWXAPI;
@@ -31,14 +30,14 @@ public class WechatAuthManager implements IAuthManager {
     private static AuthListener mAuthListener;
 
 
-     WechatAuthManager(Context context) {
+    WechatAuthManager(Context context) {
         mWeChatAppId = ShareSDK.getInstance().getWechatAppId();
         if (!TextUtils.isEmpty(mWeChatAppId)) {
             mIWXAPI = WXAPIFactory.createWXAPI(context, mWeChatAppId, true);
             if (!mIWXAPI.isWXAppInstalled()) {
                 Toast.makeText(context, R.string.share_install_wechat_tips, Toast.LENGTH_SHORT).show();
                 return;
-            }else{
+            } else {
                 mIWXAPI.registerApp(mWeChatAppId);
             }
         }

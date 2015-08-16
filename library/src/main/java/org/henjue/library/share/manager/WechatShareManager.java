@@ -5,14 +5,14 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXImageObject;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXMusicObject;
+import com.tencent.mm.sdk.modelmsg.WXTextObject;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.tencent.mm.sdk.openapi.WXImageObject;
-import com.tencent.mm.sdk.openapi.WXMediaMessage;
-import com.tencent.mm.sdk.openapi.WXMusicObject;
-import com.tencent.mm.sdk.openapi.WXTextObject;
-import com.tencent.mm.sdk.openapi.WXWebpageObject;
 
 import org.henjue.library.share.R;
 import org.henjue.library.share.ShareListener;
@@ -66,7 +66,7 @@ public class WechatShareManager implements IShareManager {
         if (!mIWXAPI.isWXAppInstalled()) {
             Toast.makeText(context, R.string.share_install_wechat_tips, Toast.LENGTH_SHORT).show();
             return;
-        }else{
+        } else {
             mIWXAPI.registerApp(mWeChatAppId);
         }
     }
@@ -99,7 +99,7 @@ public class WechatShareManager implements IShareManager {
         WXImageObject imgObj = new WXImageObject(bitmap);
         WXMediaMessage msg = new WXMediaMessage();
         msg.mediaObject = imgObj;
-        if(thumbImage!=null){
+        if (thumbImage != null) {
             msg.setThumbImage(thumbImage);
         }
         SendMessageToWX.Req req = new SendMessageToWX.Req();
@@ -119,7 +119,7 @@ public class WechatShareManager implements IShareManager {
         msg.title = message.getTitle();
         msg.description = message.getDescription();
 
-        Bitmap bmp =Bitmap.createScaledBitmap(message.getImage(), THUMB_SIZE, THUMB_SIZE, true);
+        Bitmap bmp = Bitmap.createScaledBitmap(message.getImage(), THUMB_SIZE, THUMB_SIZE, true);
         if (bmp == null) {
             Toast.makeText(mContext, R.string.share_pic_empty,
                     Toast.LENGTH_SHORT).show();
@@ -135,19 +135,19 @@ public class WechatShareManager implements IShareManager {
     }
 
 
-    private void shareMusic(int shareType,Message.Music message) {
+    private void shareMusic(int shareType, Message.Music message) {
 
         WXMusicObject music = new WXMusicObject();
         //Str1+"#wechat_music_url="+str2 ;str1是网页地址，str2是音乐地址。
 
-        music.musicUrl = message.getURL()+ "#wechat_music_url="+ message.getMusicUrl();
+        music.musicUrl = message.getURL() + "#wechat_music_url=" + message.getMusicUrl();
         WXMediaMessage msg = new WXMediaMessage(music);
         msg.title = message.getTitle();
         msg.description = message.getDescription();
 
-        Bitmap thumb =Bitmap.createScaledBitmap(message.getImage(),THUMB_SIZE,THUMB_SIZE,true);
+        Bitmap thumb = Bitmap.createScaledBitmap(message.getImage(), THUMB_SIZE, THUMB_SIZE, true);
         if (thumb == null) {
-            Toast.makeText(mContext,R.string.share_pic_empty,
+            Toast.makeText(mContext, R.string.share_pic_empty,
                     Toast.LENGTH_SHORT).show();
         } else {
             msg.setThumbImage(thumb);
@@ -162,22 +162,23 @@ public class WechatShareManager implements IShareManager {
 
     @Override
     public void share(Message content, int shareType, ShareListener listener) {
-        mListener=listener==null?ShareListener.DEFAULT:listener;
-        if(content.getShareType()== Type.Share.TEXT){
-            shareText(shareType, (Message.Text)content);
-        }else if(content.getShareType()== Type.Share.IMAGE){
-            sharePicture(shareType,(Message.Picture) content);
-        }else if(content.getShareType()== Type.Share.WEBPAGE){
-            shareWebPage(shareType,(Message.Web) content);
-        }else if(content.getShareType()== Type.Share.MUSIC){
-            shareMusic(shareType, ((Message.Music)content));
+        mListener = listener == null ? ShareListener.DEFAULT : listener;
+        if (content.getShareType() == Type.Share.TEXT) {
+            shareText(shareType, (Message.Text) content);
+        } else if (content.getShareType() == Type.Share.IMAGE) {
+            sharePicture(shareType, (Message.Picture) content);
+        } else if (content.getShareType() == Type.Share.WEBPAGE) {
+            shareWebPage(shareType, (Message.Web) content);
+        } else if (content.getShareType() == Type.Share.MUSIC) {
+            shareMusic(shareType, ((Message.Music) content));
         }
     }
 
     @Override
-    public void share(Message content,int shareType) {
-        share(content,shareType,ShareListener.DEFAULT);
+    public void share(Message content, int shareType) {
+        share(content, shareType, ShareListener.DEFAULT);
     }
+
     public static ShareListener getPlatformActionListener() {
         return mListener;
     }

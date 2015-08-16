@@ -21,11 +21,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.tencent.mm.sdk.openapi.BaseReq;
-import com.tencent.mm.sdk.openapi.BaseResp;
+import com.tencent.mm.sdk.modelbase.BaseReq;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.SendAuth;
 
 import org.henjue.library.hnet.HNet;
 import org.henjue.library.share.AuthListener;
@@ -89,9 +89,9 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 if (resp.getType() == TYPE_LOGIN) {
-                    final String code = ((SendAuth.Resp) resp).token;
+                    final String code = ((SendAuth.Resp) resp).code;
                     WechatApiService api = getApiService();
-                    api.getAccessToken(ShareSDK.getInstance().getWechatAppId(), ShareSDK.getInstance().getWechatSecret(), code, "authorization_code", new AccessTokenCallback(mAuthListener,api));
+                    api.getAccessToken(ShareSDK.getInstance().getWechatAppId(), ShareSDK.getInstance().getWechatSecret(), code, "authorization_code", new AccessTokenCallback(mAuthListener, api));
                 } else {
                     mShareListener.onSuccess();
                 }

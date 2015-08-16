@@ -2,6 +2,9 @@
 ## Build:
 ![build status](https://travis-ci.org/henjue/sharesdk.svg?branch=1.0.3_beta1)
 
+## Last Version:
+[ ![Download](https://api.bintray.com/packages/henjue/maven/sharesdk/images/download.svg) ](https://bintray.com/henjue/maven/sharesdk/_latestVersion)
+
 Use Document to [See](http://www.j99.so/2015/06/24/Android-Share-Sdk-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/)!
 
 目前发现一个BUG，下一版本会修复，临时解决方案，在你们的项目中添加如下string:

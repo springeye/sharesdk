@@ -71,7 +71,8 @@ public class QQShareManager implements IShareManager {
         try {
             final File file = new File(sharesdk, System.currentTimeMillis() + ".png");
             fos = new FileOutputStream(file);
-            message.getImage().compress(Bitmap.CompressFormat.PNG, 100, fos);
+            Bitmap image = message.getImage();
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
             params.putString(QzoneShare.SHARE_TO_QQ_TITLE, message.getTitle());
             params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, message.getURL());
             params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, message.getDescription());

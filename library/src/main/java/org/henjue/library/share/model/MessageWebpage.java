@@ -27,6 +27,9 @@ public class MessageWebpage implements Message.Web {
         this.description = description;
         this.url = url;
         this.mBitmap = BitmapFactory.decodeFile(imageUrl);
+        if(this.mBitmap==null){
+            throw new RuntimeException("Bitmap Not Decode!");
+        }
     }
     public MessageWebpage(String title, String description,
                           String url, Bitmap bitmap) {
@@ -34,6 +37,9 @@ public class MessageWebpage implements Message.Web {
         this.description = description;
         this.url = url;
         this.mBitmap=bitmap;
+        if(this.mBitmap==null){
+            throw new RuntimeException("Bitmap Not Null!");
+        }
     }
 
     @Override

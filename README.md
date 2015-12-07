@@ -1,6 +1,9 @@
 # Common Share SDK
 ## Build:
-![build status](https://travis-ci.org/henjue/sharesdk.svg?branch=master)
+![build status](https://travis-ci.org/henjue/sharesdk.svg?branch=1.0.3_beta1)
+
+## Last Version:
+[ ![Download](https://api.bintray.com/packages/henjue/maven/sharesdk/images/download.svg) ](https://bintray.com/henjue/maven/sharesdk/_latestVersion)
 
 ## Last Version:
 [ ![Download](https://api.bintray.com/packages/henjue/maven/sharesdk/images/download.svg) ](https://bintray.com/henjue/maven/sharesdk/_latestVersion)

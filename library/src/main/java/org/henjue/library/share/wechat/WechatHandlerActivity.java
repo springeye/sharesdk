@@ -21,11 +21,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.tencent.mm.sdk.modelbase.BaseReq;
-import com.tencent.mm.sdk.modelbase.BaseResp;
-import com.tencent.mm.sdk.modelmsg.SendAuth;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
+
+import com.tencent.mm.opensdk.modelbase.BaseReq;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 import org.henjue.library.hnet.HNet;
 import org.henjue.library.share.AuthListener;
@@ -109,7 +110,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
             case BaseResp.ErrCode.ERR_SENT_FAILED:
                 if (resp.getType() == TYPE_LOGIN) {
                     if (mAuthListener != null) {
-                        mAuthListener.onError();
+                        mAuthListener.onError(new RuntimeException(resp.errStr));
                     }
                 } else {
                     mShareListener.onFaild();
@@ -118,7 +119,7 @@ public class WechatHandlerActivity extends Activity implements IWXAPIEventHandle
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 if (resp.getType() == TYPE_LOGIN) {
                     if (mAuthListener != null) {
-                        mAuthListener.onError();
+                        mAuthListener.onError(new RuntimeException(resp.errStr));
                     }
                     Toast.makeText(mContext, R.string.auth_denied, Toast.LENGTH_SHORT).show();
                 }

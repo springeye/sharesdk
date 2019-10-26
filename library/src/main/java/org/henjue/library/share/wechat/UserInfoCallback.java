@@ -17,12 +17,13 @@ class UserInfoCallback implements Callback<Response> {
     private final String accessToken;
     private final long expiresTime;
 
-    UserInfoCallback(AuthListener mAuthListener,String openId,String accessToken,long expiresTime){
-        this.mAuthListener=mAuthListener;
-        this.openId=openId;
-        this.accessToken=accessToken;
-        this.expiresTime=expiresTime;
+    UserInfoCallback(AuthListener mAuthListener, String openId, String accessToken, long expiresTime) {
+        this.mAuthListener = mAuthListener;
+        this.openId = openId;
+        this.accessToken = accessToken;
+        this.expiresTime = expiresTime;
     }
+
     @Override
     public void start() {
 
@@ -44,16 +45,18 @@ class UserInfoCallback implements Callback<Response> {
         } catch (Exception e) {
             e.printStackTrace();
             if (mAuthListener != null) {
-                mAuthListener.onError();
+                mAuthListener.onError(e);
             }
         }
     }
+
     @Override
     public void failure(HNetError error) {
         if (mAuthListener != null) {
-            mAuthListener.onError();
+            mAuthListener.onError(error);
         }
     }
+
     @Override
     public void end() {
 

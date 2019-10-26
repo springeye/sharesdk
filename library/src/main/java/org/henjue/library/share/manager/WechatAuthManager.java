@@ -5,9 +5,9 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.tencent.mm.sdk.modelmsg.SendAuth;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.henjue.library.share.AuthListener;
 import org.henjue.library.share.R;

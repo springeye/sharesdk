@@ -22,7 +22,7 @@ public interface AuthListener {
 
     void onComplete(final AuthInfo userInfo);
 
-    void onError();
+    void onError(Throwable e);
 
     void onCancel();
 

@@ -24,5 +24,8 @@ allprojects {
         }
         jcenter()
         google()
+        maven {
+            url 'https://dl.bintray.com/thelasterstar/maven/'
+        }
     }
 }

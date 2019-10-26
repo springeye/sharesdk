@@ -9,7 +9,6 @@ import android.text.TextUtils;
 
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
-import com.tencent.open.utils.ThreadManager;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
@@ -130,15 +129,9 @@ public class QQShareManager implements IShareManager {
      * @param params
      */
     private void doShareToQZone(final Activity activity, final Bundle params) {
-        // QQ分享要在主线程做
-        ThreadManager.getMainHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                if (mQZoneShare != null) {
-                    mQZoneShare.shareToQzone(activity, params, iUiListener);
-                }
-            }
-        });
+        if (mQZoneShare != null) {
+            mQZoneShare.shareToQzone(activity, params, iUiListener);
+        }
     }
 
 
@@ -148,15 +141,10 @@ public class QQShareManager implements IShareManager {
      * @param params
      */
     private void doShareToQQ(final Activity activity, final Bundle params) {
-        // QQ分享要在主线程做
-        ThreadManager.getMainHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                if (mQQShare != null) {
-                    mQQShare.shareToQQ(activity, params, iUiListener);
-                }
-            }
-        });
+
+        if (mQQShare != null) {
+            mQQShare.shareToQQ(activity, params, iUiListener);
+        }
     }
 
 
@@ -164,34 +152,19 @@ public class QQShareManager implements IShareManager {
         @Override
         public void onCancel() {
             sharesdk.deleteOnExit();
-            ThreadManager.getMainHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    mListener.onCancel();
-                }
-            });
+            mListener.onCancel();
         }
 
         @Override
         public void onComplete(Object response) {
             sharesdk.deleteOnExit();
-            ThreadManager.getMainHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    mListener.onSuccess();
-                }
-            });
+            mListener.onSuccess();
         }
 
         @Override
         public void onError(UiError e) {
             sharesdk.deleteOnExit();
-            ThreadManager.getMainHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    mListener.onFaild();
-                }
-            });
+            mListener.onFaild();
         }
     };
 

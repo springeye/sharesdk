@@ -40,7 +40,7 @@ class AccessTokenCallback implements Callback<Response> {
         } catch (Exception e) {
             e.printStackTrace();
             if (mAuthListener != null) {
-                mAuthListener.onError();
+                mAuthListener.onError(e);
             }
         }
     }
@@ -48,7 +48,7 @@ class AccessTokenCallback implements Callback<Response> {
     @Override
     public void failure(HNetError error) {
         if (mAuthListener != null) {
-            mAuthListener.onError();
+            mAuthListener.onError(error);
         }
     }
 

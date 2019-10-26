@@ -31,7 +31,7 @@ public class QQAuthManager implements IAuthManager {
     protected AuthListener mAuthListener;
 
 
-     QQAuthManager(Context context) {
+    QQAuthManager(Context context) {
         mContext = context;
         mAppId = ShareSDK.getInstance().getQQAppId();
         if (!TextUtils.isEmpty(mAppId)) {
@@ -71,13 +71,13 @@ public class QQAuthManager implements IAuthManager {
                         public void onComplete(Object object) {
                             try {
                                 JSONObject json = (JSONObject) object;
-                                String nickname=json.getString("nickname");
-                                int vip=json.getInt("vip");
-                                String headimg=json.getString(vip==0?"figureurl_2":"figureurl_qq_2");
-                                String id=mTencent.getOpenId();
-                                String token=mTencent.getAccessToken();
-                                long expiresTime=mTencent.getExpiresIn();
-                                AuthInfo info=new AuthInfo(json.toString(),nickname,headimg,id,token,expiresTime);
+                                String nickname = json.getString("nickname");
+                                int vip = json.getInt("vip");
+                                String headimg = json.getString(vip == 0 ? "figureurl_2" : "figureurl_qq_2");
+                                String id = mTencent.getOpenId();
+                                String token = mTencent.getAccessToken();
+                                long expiresTime = mTencent.getExpiresIn();
+                                AuthInfo info = new AuthInfo(json.toString(), nickname, headimg, id, token, expiresTime);
                                 if (mAuthListener != null) {
                                     mAuthListener.onComplete(info);
                                 }
@@ -85,8 +85,7 @@ public class QQAuthManager implements IAuthManager {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 if (mAuthListener != null) {
-                                    mAuthListener
-                                            .onError();
+                                    mAuthListener.onError(e);
                                 }
                             }
 
@@ -96,8 +95,7 @@ public class QQAuthManager implements IAuthManager {
                         @Override
                         public void onError(UiError uiError) {
                             if (mAuthListener != null) {
-                                mAuthListener
-                                        .onError();
+                                mAuthListener.onError(new RuntimeException(uiError.toString()));
                             }
                         }
 
@@ -115,7 +113,7 @@ public class QQAuthManager implements IAuthManager {
                 public void onError(UiError uiError) {
                     if (mAuthListener != null) {
                         mAuthListener
-                                .onError();
+                                .onError(new RuntimeException(uiError.toString()));
                     }
                 }
 

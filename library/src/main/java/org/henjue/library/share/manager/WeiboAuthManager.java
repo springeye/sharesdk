@@ -2,26 +2,26 @@ package org.henjue.library.share.manager;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.text.TextUtils;
 
+import com.sina.weibo.sdk.auth.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
-import com.sina.weibo.sdk.auth.WeiboAuthListener;
+import com.sina.weibo.sdk.auth.WbAuthListener;
+import com.sina.weibo.sdk.auth.WbConnectErrorMessage;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
-import com.sina.weibo.sdk.exception.WeiboException;
-import com.sina.weibo.sdk.net.RequestListener;
 
 import org.henjue.library.share.ShareSDK;
 import org.henjue.library.share.model.AuthInfo;
-import org.henjue.library.share.weibo.AccessTokenKeeper;
-import org.henjue.library.share.weibo.model.User;
-import org.henjue.library.share.weibo.model.UsersAPI;
+import org.henjue.library.share.weibo.UsersAPI;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Locale;
+
 
 /**
  * Created by echo on 5/19/15.
  */
 public class WeiboAuthManager implements IAuthManager {
-
 
 
     private static final String SCOPE =
@@ -45,7 +45,7 @@ public class WeiboAuthManager implements IAuthManager {
     private static SsoHandler mSsoHandler;
 
 
-     WeiboAuthManager(Context context) {
+    WeiboAuthManager(Context context) {
 
         mContext = context;
         mSinaAppKey = ShareSDK.getInstance().getWeiboAppId();
@@ -62,7 +62,7 @@ public class WeiboAuthManager implements IAuthManager {
         mAuthListener = authListener;
         AccessTokenKeeper.clear(mContext);
         mAuthInfo = new com.sina.weibo.sdk.auth.AuthInfo(mContext, mSinaAppKey, ShareSDK.getInstance().getSinaRedirectUrl(), SCOPE);
-        mSsoHandler = new SsoHandler((Activity) mContext, mAuthInfo);
+        mSsoHandler = new SsoHandler((Activity) mContext);
         mSsoHandler.authorize(new AuthListener());
 
     }
@@ -71,64 +71,52 @@ public class WeiboAuthManager implements IAuthManager {
      * * 1. SSO 授权时，需要在 onActivityResult 中调用 {@link SsoHandler#authorizeCallBack} 后，
      * 该回调才会被执行。
      * 2. 非SSO 授权时，当授权结束后，该回调就会被执行
-     *
      */
-    private class AuthListener implements WeiboAuthListener {
+    private class AuthListener implements WbAuthListener, UsersAPI.UserRequestListener {
 
         @Override
-        public void onComplete(Bundle values) {
-            final Oauth2AccessToken accessToken = Oauth2AccessToken.parseAccessToken(values);
+        public void onSuccess(Oauth2AccessToken accessToken) {
             if (accessToken != null && accessToken.isSessionValid()) {
                 AccessTokenKeeper.writeAccessToken(mContext, accessToken);
                 userAPI = new UsersAPI(mContext, mSinaAppKey, accessToken);
-                userAPI.show(Long.parseLong(accessToken.getUid()), mListener);
+                userAPI.show(this);
             }
         }
 
         @Override
-        public void onWeiboException(WeiboException e) {
-            if (mAuthListener != null) {
-                mAuthListener.onError();
-            }
-        }
-
-        @Override
-        public void onCancel() {
+        public void cancel() {
             if (mAuthListener != null) {
                 mAuthListener.onCancel();
             }
         }
-    }
-
-    private RequestListener mListener = new RequestListener() {
-        @Override
-        public void onComplete(String response) {
-            if (!TextUtils.isEmpty(response)) {
-
-                // 调用 User#parse 将JSON串解析成User对象
-                User user = User.parse(response);
-                if (user != null) {
-                    Oauth2AccessToken oauth2AccessToken = AccessTokenKeeper.readAccessToken(mContext);
-                    String nickname = user.name;
-                    String headimgurl = user.avatar_large;
-                    String id = user.id;
-                    String token = oauth2AccessToken.getToken();
-                    long expiresTime = oauth2AccessToken.getExpiresTime();
-                    AuthInfo info=new AuthInfo(response,nickname, headimgurl, id, token, expiresTime);
-                    if (mAuthListener != null) {
-                        mAuthListener.onComplete(info);
-                    }
-                }
-            }
-        }
 
         @Override
-        public void onWeiboException(WeiboException e) {
+        public void onFailure(WbConnectErrorMessage wbConnectErrorMessage) {
             if (mAuthListener != null) {
-                mAuthListener.onError();
+                mAuthListener.onError(new RuntimeException(String.format(Locale.getDefault(), "error_code:%d,error_msg:%s", wbConnectErrorMessage.getErrorCode(), wbConnectErrorMessage.getErrorMessage())));
             }
         }
-    };
+
+
+        @Override
+        public void onGetUserInfoSuccess(JSONObject info, String token, long expiresTime) {
+            try {
+                String nickname = info.getString("screen_name");
+                String avatar = info.getString("profile_image_url");
+                String id = info.getString("id");
+                AuthInfo autoInfo = new AuthInfo(info.toString(), nickname, avatar, id, token, expiresTime);
+                mAuthListener.onComplete(autoInfo);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                mAuthListener.onError(e);
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            mAuthListener.onError(e);
+        }
+    }
 
 
 }

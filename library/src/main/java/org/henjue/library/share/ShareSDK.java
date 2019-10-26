@@ -31,35 +31,38 @@ public class ShareSDK {
     }
 
     private String mWechatAppId = "";
-    private String mWeiboAppId  = "";
+    private String mWeiboAppId = "";
+    private String mWeiboScope = "";
     private String mQQAppId = "";
-    private String mWechatSecret= "";
+    private String mWechatSecret = "";
 
-    private String mSinaRedirectUrl= "";
+    private String mSinaRedirectUrl = "";
 
 
     /**
      * init all config
+     *
      * @param wechatAppId
      * @param weiboAppId
      * @param qqAppId
      */
-    public void initShare(String wechatAppId, String weiboAppId, String qqAppId,String wechatSecret,String sinaRedirectUrl){
+    public void initShare(String wechatAppId, String weiboAppId, String qqAppId, String wechatSecret, String sinaRedirectUrl) {
         mWechatAppId = wechatAppId;
         mWeiboAppId = weiboAppId;
         mQQAppId = qqAppId;
         mWechatSecret = wechatSecret;
-        this.mSinaRedirectUrl=sinaRedirectUrl;
+        this.mSinaRedirectUrl = sinaRedirectUrl;
 
     }
 
 
     /**
      * init wechat config
+     *
      * @param wechatAppId
      * @param wechatSecret
      */
-    public void initWechat(String wechatAppId,String wechatSecret){
+    public void initWechat(String wechatAppId, String wechatSecret) {
         mWechatAppId = wechatAppId;
         mWechatSecret = wechatSecret;
     }
@@ -67,27 +70,33 @@ public class ShareSDK {
 
     /**
      * init weibo config
+     *
      * @param weiboAppId
      */
-    public void initWeibo(String weiboAppId,String sinaRedirectUrl){
+    public void initWeibo(String weiboAppId, String sinaRedirectUrl, String scope) {
 
         mWeiboAppId = weiboAppId;
-        this.mSinaRedirectUrl=sinaRedirectUrl;
+        this.mSinaRedirectUrl = sinaRedirectUrl;
+        this.mWeiboScope = scope;
     }
 
     /**
      * init QQ config
+     *
      * @param qqAppId
      */
-    public void initQQ(String qqAppId){
+    public void initQQ(String qqAppId) {
 
         mQQAppId = qqAppId;
     }
 
 
-
     public String getWechatAppId() {
         return mWechatAppId;
+    }
+
+    public String getWeiboScope() {
+        return mWeiboScope;
     }
 
     public String getWeiboAppId() {

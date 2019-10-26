@@ -51,10 +51,14 @@ public class WeiboShareManager implements IShareManager, Application.ActivityLif
     public static final int WEIBO_SHARE_TYPE = 0;
 
 
+    public static WbShareHandler getShareHandler() {
+        return mShareHandler;
+    }
+
     /**
      * 微博分享的接口实例
      */
-    private WbShareHandler mShareHandler;
+    private static WbShareHandler mShareHandler;
     private ShareListener mListener;
     private Activity currentActivity;
 

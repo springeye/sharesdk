@@ -18,9 +18,11 @@ Use Document to [See](http://www.j99.so/2015/06/24/Android-Share-Sdk-%E4%BD%BF%E
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);  
-    mSsoHandler = WeiboAuthManager.getSsoHandler();  
+    mSsoHandler = WeiboAuthManager.getSsoHandler();
+    mShareHandler = WeiboShareManager.getShareHandler();
     if (mSsoHandler != null) {
-        mSsoHandler.authorizeCallBack(requestCode, resultCode, data);  
+        mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+        mShareHandler.doResultIntent(data,this);
     }
 }
 ```
